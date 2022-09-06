@@ -14,9 +14,7 @@ namespace Gma.DataStructures.StringSearch
         //The last leaf that was added during the update operation
         private Node<K, WordPosition<T>> _activeLeaf;
 
-        public UkkonenTrie() : this(0)
-        {
-        }
+        public UkkonenTrie() : this(0) { }
 
         public UkkonenTrie(int minSuffixLength) 
         {
@@ -49,7 +47,7 @@ namespace Gma.DataStructures.StringSearch
             if (min.Length != max.Length) throw new ArgumentException("Lengths of min and max must be the same.");
             if (min.Length < _minSuffixLength) return Enumerable.Empty<WordPosition<T>>();
             var nodes = SearchNodeRange(_root, 0, min, max);
-            return nodes.SelectMany(o => o.GetData()).Distinct();
+            return nodes.SelectMany(o => o.GetData());
         }
 
 

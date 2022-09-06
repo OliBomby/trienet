@@ -7,13 +7,13 @@ namespace Gma.DataStructures.StringSearch
     internal class Node<K, T> where K : IComparable<K>
     {
         private readonly IDictionary<K, Edge<K, T>> _edges;
-        private readonly HashSet<T> _data;
+        private readonly List<T> _data;
 
         public Node()
         {
             _edges = new EdgeDictionary<K, T>();
             Suffix = null;
-            _data = new HashSet<T>();
+            _data = new List<T>();
         }
 
         public IEnumerable<Node<K, T>> Children() {
@@ -27,7 +27,7 @@ namespace Gma.DataStructures.StringSearch
         public IEnumerable<T> GetData()
         {
             var childData = _edges.Values.Select((e) => e.Target).SelectMany((t) => t.GetData());
-            return _data.Concat(childData).Distinct();
+            return _data.Concat(childData);
         }
 
         public void AddRef(T value)
@@ -40,9 +40,6 @@ namespace Gma.DataStructures.StringSearch
             var iter = Suffix;
             while (iter != null)
             {
-                if (iter._data.Contains(value))
-                    break;
-
                 iter._data.Add(value);
                 iter = iter.Suffix;
             }
