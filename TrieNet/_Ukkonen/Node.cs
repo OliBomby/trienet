@@ -6,27 +6,31 @@ namespace Gma.DataStructures.StringSearch
 {
     internal class Node<K, T> where K : IComparable<K>
     {
-        private readonly IDictionary<K, Edge<K, T>> _edges;
         private readonly List<T> _data;
+
+        public List<(K, Edge<K, T>)> Edges { get; }
+
+        public Node<K, T> Suffix { get; set; }
 
         public Node()
         {
-            _edges = new EdgeDictionary<K, T>();
-            Suffix = null;
+            Edges = new List<(K, Edge<K, T>)>();
             _data = new List<T>();
-        }
-
-        public IEnumerable<Node<K, T>> Children() {
-            return _edges.Values.Select(e => e.Target);
+            Suffix = null;
         }
 
         public long Size() {
-            return Children().Sum(o => o.Size()) + 1;
+            long sum = 1;
+            foreach (var key in Edges) {
+                sum += key.Item2.Target.Size();
+            }
+
+            return sum;
         }
 
         public IEnumerable<T> GetData()
         {
-            var childData = _edges.Values.Select((e) => e.Target).SelectMany((t) => t.GetData());
+            var childData = Edges.SelectMany((e) => e.Item2.Target.GetData());
             return _data.Concat(childData);
         }
 
@@ -45,27 +49,43 @@ namespace Gma.DataStructures.StringSearch
             }
         }
 
-        public void AddEdge(K ch, Edge<K, T> e)
-        {
-            _edges[ch] = e;
-        }
-
-        public Edge<K, T> GetEdge(K ch)
-        {
-            Edge<K, T> result;
-            _edges.TryGetValue(ch, out result);
-            return result;
-        }
-
-        public IEnumerable<Edge<K, T>> GetEdgesBetween(K min, K max)
-        {
-            foreach (var ch in _edges.Keys) {
-                if (ch.CompareTo(min) >= 0 && ch.CompareTo(max) <= 0) {
-                    yield return _edges[ch];
-                }
+        public void AddEdge(K ch, Edge<K, T> e) {
+            var index = IndexOf(ch);
+            if (index < 0) {
+                Edges.Insert(~index, (ch, e));
+            } else {
+                Edges[index] = (ch, e);
             }
         }
 
-        public Node<K, T> Suffix { get; set; }
+        public Edge<K, T> GetEdge(K ch) {
+            var index = IndexOf(ch);
+            return index < 0 ? null : Edges[index].Item2;
+        }
+
+        private int IndexOf(K ch) {
+            // Perform binary search to find the place of this character
+            var n = Edges.Count;
+            var min = 0;
+            var max = n - 1;
+            var comparer = Comparer<K>.Default;
+            while (min <= max) {
+                var mid = min + (max - min) / 2;
+                K midTerm = Edges[mid].Item1;
+
+                switch (comparer.Compare(midTerm, ch)) {
+                    case 0:
+                        return mid;
+                    case < 0:
+                        max = mid - 1;
+                        break;
+                    case > 0:
+                        min = mid + 1;
+                        break;
+                }
+            }
+
+            return ~min;
+        }
     }
 }

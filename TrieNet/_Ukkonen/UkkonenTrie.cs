@@ -46,7 +46,7 @@ namespace Gma.DataStructures.StringSearch
         public IEnumerable<WordPosition<T>> RetrieveSubstringsRange(ReadOnlyMemory<K> min, ReadOnlyMemory<K> max) {
             if (min.Length != max.Length) throw new ArgumentException("Lengths of min and max must be the same.");
             if (min.Length < _minSuffixLength) return Enumerable.Empty<WordPosition<T>>();
-            var nodes = SearchNodeRange(_root, 0, min, max);
+            var nodes = SearchNodeRange(_root, min, max);
             return nodes.SelectMany(o => o.GetData());
         }
 
@@ -78,7 +78,7 @@ namespace Gma.DataStructures.StringSearch
         /**
          * Returns all tree NodeA<T> (if present) that corresponds to the given range of strings.
          */
-        private IEnumerable<Node<K, WordPosition<T>>> SearchNodeRange(Node<K, WordPosition<T>> currentNode, int i, ReadOnlyMemory<K> min, ReadOnlyMemory<K> max)
+        private static IEnumerable<Node<K, WordPosition<T>>> SearchNodeRange(Node<K, WordPosition<T>> startNode, ReadOnlyMemory<K> min, ReadOnlyMemory<K> max)
         {
             /*
              * Verifies if exists a path from the root to a NodeA<T> such that the concatenation
@@ -86,31 +86,34 @@ namespace Gma.DataStructures.StringSearch
              * If such a path is found, the last NodeA<T> on it is returned.
              */
 
-            var chMin = min.Span[i];
-            var chMax = max.Span[i];
-            // follow all the EdgeA<T> which are between min and max
-            foreach (var currentEdge in currentNode.GetEdgesBetween(chMin, chMax)) {
-                if (null == currentEdge)
-                {
-                    // there is no EdgeA<T> starting with this char
-                    continue;
-                }
-                var label = currentEdge.Label.Span;
-                var lenToMatch = Math.Min(min.Length - i, label.Length);
+            // Perform a breadth-first search
+            var nodesToSearch = new Queue<(Node<K, WordPosition<T>>, int)>();
+            nodesToSearch.Enqueue((startNode, 0));
+            while (nodesToSearch.Count > 0) {
+                var (currentNode, i) = nodesToSearch.Dequeue();
+                var chMin = min.Span[i];
+                var chMax = max.Span[i];
 
-                if (!RegionMatchesRange(min.Span, max.Span, i, label, 0, lenToMatch))
-                {
-                    // the label on the EdgeA<T> does not correspond to the one in the string to search
-                    continue;
-                }
+                // follow all the EdgeA<T> which are between min and max
+                var edges = currentNode.Edges;
+                foreach (var (ch, edge) in edges) {
+                    if (edge is null || ch.CompareTo(chMin) < 0 || ch.CompareTo(chMax) > 0) continue;
 
-                if (label.Length >= min.Length - i)
-                {
-                    yield return currentEdge.Target;
-                } else {
-                    // advance to next NodeA<T>
-                    foreach (var result in SearchNodeRange(currentEdge.Target, i + lenToMatch, min, max)) {
-                        yield return result;
+                    var label = edge.Label.Span;
+                    var lenToMatch = Math.Min(min.Length - i, label.Length);
+
+                    if (!RegionMatchesRange(min.Span, max.Span, i, label, 0, lenToMatch))
+                    {
+                        // the label on the EdgeA<T> does not correspond to the one in the string to search
+                        continue;
+                    }
+
+                    if (label.Length >= min.Length - i)
+                    {
+                        yield return edge.Target;
+                    } else {
+                        // advance to next NodeA<T>
+                        nodesToSearch.Enqueue((edge.Target, i + lenToMatch));
                     }
                 }
             }

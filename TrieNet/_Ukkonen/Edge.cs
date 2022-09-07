@@ -6,8 +6,8 @@ namespace Gma.DataStructures.StringSearch
     {
         public Edge(ReadOnlyMemory<K> label, Node<K, T> target)
         {
-            this.Label = label;
-            this.Target = target;
+            Label = label;
+            Target = target;
         }
 
         public ReadOnlyMemory<K> Label { get; set; }
