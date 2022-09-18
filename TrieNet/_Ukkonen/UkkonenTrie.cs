@@ -9,17 +9,17 @@ namespace Gma.DataStructures.StringSearch
         protected readonly int _minSuffixLength;
 
         //The root of the suffix tree
-        private readonly Node<K, WordPosition<T>> _root;
+        private readonly Node<K, T> _root;
 
         //The last leaf that was added during the update operation
-        private Node<K, WordPosition<T>> _activeLeaf;
+        private Node<K, T> _activeLeaf;
 
         public UkkonenTrie() : this(0) { }
 
         public UkkonenTrie(int minSuffixLength) 
         {
             _minSuffixLength = minSuffixLength;
-            _root = new Node<K, WordPosition<T>>();
+            _root = new Node<K, T>();
             _activeLeaf = _root;
         }
 
@@ -78,7 +78,7 @@ namespace Gma.DataStructures.StringSearch
         /**
          * Returns all tree NodeA<T> (if present) that corresponds to the given range of strings.
          */
-        private static IEnumerable<Node<K, WordPosition<T>>> SearchNodeRange(Node<K, WordPosition<T>> startNode, ReadOnlyMemory<K> min, ReadOnlyMemory<K> max)
+        private static IEnumerable<Node<K, T>> SearchNodeRange(Node<K, T> startNode, ReadOnlyMemory<K> min, ReadOnlyMemory<K> max)
         {
             /*
              * Verifies if exists a path from the root to a NodeA<T> such that the concatenation
@@ -87,7 +87,7 @@ namespace Gma.DataStructures.StringSearch
              */
 
             // Perform a breadth-first search
-            var nodesToSearch = new Queue<(Node<K, WordPosition<T>>, int)>();
+            var nodesToSearch = new Queue<(Node<K, T>, int)>();
             nodesToSearch.Enqueue((startNode, 0));
             while (nodesToSearch.Count > 0) {
                 var (currentNode, i) = nodesToSearch.Dequeue();
@@ -122,7 +122,7 @@ namespace Gma.DataStructures.StringSearch
         /**
          * Returns the tree NodeA<T> (if present) that corresponds to the given string.
          */
-        private Node<K, WordPosition<T>> SearchNode(ReadOnlySpan<K> word)
+        private Node<K, T> SearchNode(ReadOnlySpan<K> word)
         {
             /*
              * Verifies if exists a path from the root to a NodeA<T> such that the concatenation
@@ -215,7 +215,7 @@ namespace Gma.DataStructures.StringSearch
          *                  the last NodeA<T> that can be reached by following the path denoted by stringPart starting from inputs
          *         
          */
-        private static (bool, Node<K, WordPosition<T>>, int) TestAndSplit(Node<K, WordPosition<T>> inputs, StringSlice<K> stringPart, K t, ReadOnlyMemory<K> remainder, T value, int size, int offset)
+        private static (bool, Node<K, T>, int) TestAndSplit(Node<K, T> inputs, StringSlice<K> stringPart, K t, ReadOnlyMemory<K> remainder, T value, int size, int offset)
         {
             // descend the tree as far as possible
             (var s, var str, offset) = Canonize(inputs, stringPart, offset);
@@ -235,9 +235,9 @@ namespace Gma.DataStructures.StringSearch
                 //assert (label.startsWith(str));
 
                 // build a new NodeA<T>
-                var r = new Node<K, WordPosition<T>>();
+                var r = new Node<K, T>();
                 // build a new EdgeA<T>
-                var newedge = new Edge<K, WordPosition<T>>(str.AsMemory(), r);
+                var newedge = new Edge<K, T>(str.AsMemory(), r);
 
                 g.Label = newlabel;
 
@@ -270,10 +270,10 @@ namespace Gma.DataStructures.StringSearch
                 return (true, s, offset);
             }
             // need to split as above
-            var newNode = new Node<K, WordPosition<T>>();
+            var newNode = new Node<K, T>();
             newNode.AddRef(new WordPosition<T>(size - offset - remainder.Length, value));
 
-            var newEdge = new Edge<K, WordPosition<T>>(remainder, newNode);
+            var newEdge = new Edge<K, T>(remainder, newNode);
             e.Label = e.Label.Slice(remainder.Length);
             newNode.AddEdge(e.Label.Span[0], e);
             s.AddEdge(t, newEdge);
@@ -287,7 +287,7 @@ namespace Gma.DataStructures.StringSearch
          * a prefix of inputstr and remainder will be string that must be
          * appended to the concatenation of labels from s to n to get inpustr.
          */
-        private static (Node<K, WordPosition<T>>, StringSlice<K>, int) Canonize(Node<K, WordPosition<T>> s, StringSlice<K> inputstr, int offset)
+        private static (Node<K, T>, StringSlice<K>, int) Canonize(Node<K, T> s, StringSlice<K> inputstr, int offset)
         {
 
             if (inputstr.Length == 0)
@@ -327,7 +327,7 @@ namespace Gma.DataStructures.StringSearch
          * @param rest the rest of the string
          * @param value the value to add to the index
          */
-        private (Node<K, WordPosition<T>>, StringSlice<K>, int) Update(Node<K, WordPosition<T>> inputNode, StringSlice<K> stringPart, ReadOnlyMemory<K> rest, T value, int size, int offset)
+        private (Node<K, T>, StringSlice<K>, int) Update(Node<K, T> inputNode, StringSlice<K> stringPart, ReadOnlyMemory<K> rest, T value, int size, int offset)
         {
             var s = inputNode;
             var tempstr = stringPart;
@@ -344,7 +344,7 @@ namespace Gma.DataStructures.StringSearch
             {
                 // line 3
                 var tempEdge = r.GetEdge(newChar);
-                Node<K, WordPosition<T>> leaf;
+                Node<K, T> leaf;
                 if (null != tempEdge)
                 {
                     // such a NodeA<T> is already present. This is one of the main differences from Ukkonen's case:
@@ -354,9 +354,9 @@ namespace Gma.DataStructures.StringSearch
                 else
                 {
                     // must build a new leaf
-                    leaf = new Node<K, WordPosition<T>>();
+                    leaf = new Node<K, T>();
                     leaf.AddRef(new WordPosition<T>(size - offset2 - rest.Length, value));
-                    var newedge = new Edge<K, WordPosition<T>>(rest, leaf);
+                    var newedge = new Edge<K, T>(rest, leaf);
                     r.AddEdge(newChar, newedge);
                 }
 

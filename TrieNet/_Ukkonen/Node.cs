@@ -6,7 +6,7 @@ namespace Gma.DataStructures.StringSearch
 {
     internal class Node<K, T> where K : IComparable<K>
     {
-        private readonly List<T> _data;
+        private readonly List<WordPosition<T>> _data;
 
         public List<(K, Edge<K, T>)> Edges { get; }
 
@@ -15,7 +15,7 @@ namespace Gma.DataStructures.StringSearch
         public Node()
         {
             Edges = new List<(K, Edge<K, T>)>();
-            _data = new List<T>();
+            _data = new List<WordPosition<T>>();
             Suffix = null;
         }
 
@@ -28,13 +28,13 @@ namespace Gma.DataStructures.StringSearch
             return sum;
         }
 
-        public IEnumerable<T> GetData()
+        public IEnumerable<WordPosition<T>> GetData()
         {
             var childData = Edges.SelectMany((e) => e.Item2.Target.GetData());
             return _data.Concat(childData);
         }
 
-        public void AddRef(T value)
+        public void AddRef(WordPosition<T> value)
         {
             if (_data.Contains(value))
                 return;
@@ -42,9 +42,10 @@ namespace Gma.DataStructures.StringSearch
             _data.Add(value);
             //  add this reference to all the suffixes as well
             var iter = Suffix;
+            var i = 0;
             while (iter != null)
             {
-                iter._data.Add(value);
+                iter._data.Add(new WordPosition<T>(value.CharPosition + ++i, value.Value));
                 iter = iter.Suffix;
             }
         }
