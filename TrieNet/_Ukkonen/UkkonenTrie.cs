@@ -9,7 +9,7 @@ namespace Gma.DataStructures.StringSearch
         protected readonly int _minSuffixLength;
 
         //The root of the suffix tree
-        private readonly Node<K, WordPosition<T>> _root;
+        protected readonly Node<K, WordPosition<T>> _root;
 
         //The last leaf that was added during the update operation
         private Node<K, WordPosition<T>> _activeLeaf;

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Gma.DataStructures.StringSearch
 {
-    internal class Node<K, T> where K : IComparable<K>
+    public class Node<K, T> where K : IComparable<K>
     {
         private readonly List<T> _data;
 
