@@ -23,6 +23,7 @@ namespace Gma.DataStructures.StringSearch.Test
 
             Trie2 = CreateTrie();
             Trie2.Add("aabacdefac", 0);
+            Trie2.Add("aabacdefac", 1);
         }
 
         [TestCase("a", new[] { 0, 1, 3, 8 })]
@@ -37,7 +38,7 @@ namespace Gma.DataStructures.StringSearch.Test
         [TestCase("aabac", new[] { 0 })]
         public void Test2(string query, IEnumerable<int> expected) {
             IEnumerable<WordPosition<int>> actual = Trie2.RetrieveSubstrings(query);
-            CollectionAssert.AreEquivalent(expected, actual.Select(o => o.CharPosition));
+            CollectionAssert.AreEquivalent(Enumerable.Range(0, 2).SelectMany(i => expected.Select(c => new WordPosition<int>(c, i))), actual);
         }
 
         protected virtual ISuffixTrie<int> CreateTrie()
