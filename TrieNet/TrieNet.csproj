@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <PackageId>TrieNet</PackageId>
-    <Authors>TrieNet</Authors>
-    <Company>George Mamaladze</Company>
-    <Product>TrieNet</Product>
-    <Description>.NET Implementations of Trie Data Structures for Substring Search, Auto-completion and Intelli-sense. Includes: patricia trie, suffix trie and a trie implementation using Ukkonen's algorithm.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Copyright>Copyright 2013</Copyright>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
-    <FileVersion>1.0.4.0</FileVersion>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/license.txt</PackageLicenseUrl>
-    <PackageProjectUrl>ttps://github.com/gmamaladze/trienet</PackageProjectUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/img/trienet.png</PackageIconUrl>
-    <PackageTags>ata-structures dotnet algorithms search</PackageTags>
-    <Version>1.0.4</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net6.0</TargetFrameworks>
+        <PackageId>TrieNet</PackageId>
+        <Authors>TrieNet</Authors>
+        <Company>George Mamaladze</Company>
+        <Product>TrieNet</Product>
+        <Description>.NET Implementations of Trie Data Structures for Substring Search, Auto-completion and Intelli-sense. Includes: patricia trie, suffix trie and a trie implementation using Ukkonen's algorithm.</Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Copyright>Copyright 2013</Copyright>
+        <AssemblyVersion>1.0.4.0</AssemblyVersion>
+        <FileVersion>1.0.4.0</FileVersion>
+        <PackageLicenseUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/license.txt</PackageLicenseUrl>
+        <PackageProjectUrl>ttps://github.com/gmamaladze/trienet</PackageProjectUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/img/trienet.png</PackageIconUrl>
+        <PackageTags>ata-structures dotnet algorithms search</PackageTags>
+        <Version>1.0.4</Version>
+    </PropertyGroup>
 
 </Project>

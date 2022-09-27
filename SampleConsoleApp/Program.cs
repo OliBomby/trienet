@@ -1,122 +1,102 @@
-﻿using System.Diagnostics;
+﻿// This code is distributed under MIT license. Copyright (c) 2022 OliBomby
+// See license.txt or http://opensource.org/licenses/mit-license.php
+
+using System.Diagnostics;
 using System.Text;
+using TrieNet;
+using TrieNet.Ukkonen;
 
-namespace Gma.DataStructures.StringSearch.SampleConsoleApp
-{
-    internal class Program
-    {
-        private static void Main(string[] args)
-        {
-            var trie = new UkkonenTrie<char, int>(0);
-            //You can replace it with other trie data structures too 
-            //ITrie<int> trie = new Trie<int>();
-            //ITrie<int> trie = new PatriciaSuffixTrie<int>(3);
+namespace SampleConsoleApp;
 
-            
-            try
-            {
-                //Build-up
-                BuildUp("sample.txt", trie);
-                //Look-up
-                LookUp("a", trie);
-                LookUp("e", trie);
-                LookUp("u", trie);
-                LookUp("i", trie);
-                LookUp("o", trie);
-                LookUp("fox", trie);
-                LookUp("overs", trie);
-                LookUp("porta", trie);
-                LookUp("supercalifragilisticexpialidocious", trie);
-            }
-            catch (IOException ioException) { Console.WriteLine("Error: {0}", ioException.Message);}
-            catch (UnauthorizedAccessException unauthorizedAccessException) { Console.WriteLine("Error: {0}", unauthorizedAccessException.Message);}
+internal class Program {
+    private static void Main(string[] _) {
+        var trie = new UkkonenTrie<char, int>(0);
+        //You can replace it with other trie data structures too
+        //ITrie<int> trie = new Trie<int>();
+        //ITrie<int> trie = new PatriciaSuffixTrie<int>(3);
 
-            Console.WriteLine("-------------Press any key to quit--------------");
-            Console.ReadKey();
+
+        try {
+            //Build-up
+            BuildUp("sample.txt", trie);
+            //Look-up
+            LookUp("a", trie);
+            LookUp("e", trie);
+            LookUp("u", trie);
+            LookUp("i", trie);
+            LookUp("o", trie);
+            LookUp("fox", trie);
+            LookUp("overs", trie);
+            LookUp("porta", trie);
+            LookUp("supercalifragilisticexpialidocious", trie);
+        }
+        catch (IOException ioException) {
+            Console.WriteLine("Error: {0}", ioException.Message);
+        }
+        catch (UnauthorizedAccessException unauthorizedAccessException) {
+            Console.WriteLine("Error: {0}", unauthorizedAccessException.Message);
         }
 
-        private static void BuildUp(string fileName, IGenericSuffixTrie<char, int> trie)
-        {
-            IEnumerable<WordAndLine> allWordsInFile = GetWordsFromFile(fileName);
-            int i = 0;
-            foreach (WordAndLine wordAndLine in allWordsInFile)
-            {
-                trie.Add(wordAndLine.Word.AsMemory(), ++i);
-            }
+        Console.WriteLine("-------------Press any key to quit--------------");
+        Console.ReadKey();
+    }
+
+    private static void BuildUp(string fileName, IGenericSuffixTrie<char, int> trie) {
+        var allWordsInFile = GetWordsFromFile(fileName);
+        var i = 0;
+        foreach (var word in allWordsInFile) trie.Add(word.AsMemory(), ++i);
+    }
+
+    private static void LookUp(string searchString, IGenericSuffixTrie<char, int> trie) {
+        Console.WriteLine("----------------------------------------");
+        Console.WriteLine("Look-up for string '{0}'", searchString);
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+
+        var result = trie.RetrieveSubstrings(searchString.AsSpan()).ToArray();
+        stopWatch.Stop();
+
+        var matchesText = string.Join(",", result);
+        var matchesCount = result.Count();
+
+        if (matchesCount == 0)
+            Console.WriteLine("No matches found.\tTime: {0}", stopWatch.Elapsed);
+        else
+            Console.WriteLine(" {0} matches found. \tTime: {1}\tLines: {2}", matchesCount, stopWatch.Elapsed,
+                matchesText);
+    }
+
+
+    private static IEnumerable<string> GetWordsFromFile(string file) {
+        using var reader = File.OpenText(file);
+        Console.WriteLine("Processing file {0} ...", file);
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        var lineNo = 0;
+        while (!reader.EndOfStream) {
+            var line = reader.ReadLine();
+            lineNo++;
+            var words = GetWordsFromLine(line!);
+            foreach (var word in words) yield return word;
         }
 
-        private static void LookUp(string searchString, IGenericSuffixTrie<char, int> trie)
-        {
-            Console.WriteLine("----------------------------------------");
-            Console.WriteLine("Look-up for string '{0}'", searchString);
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
+        stopWatch.Stop();
+        Console.WriteLine("Lines:{0}\tTime:{1}", lineNo, stopWatch.Elapsed);
+    }
 
-            var result = trie.RetrieveSubstrings(searchString.AsSpan()).ToArray();
-            stopWatch.Stop();
-
-            string matchesText = String.Join(",", result);
-            int matchesCount = result.Count();
-
-            if (matchesCount == 0)
-            {
-                Console.WriteLine("No matches found.\tTime: {0}", stopWatch.Elapsed);
+    private static IEnumerable<string> GetWordsFromLine(string line) {
+        var word = new StringBuilder();
+        foreach (var ch in line)
+            if (char.IsLetter(ch)) {
+                word.Append(ch);
             }
-            else
-            {
-                Console.WriteLine(" {0} matches found. \tTime: {1}\tLines: {2}", matchesCount, stopWatch.Elapsed,
-                    matchesText);
+            else {
+                if (word.Length == 0) continue;
+                yield return word.ToString();
+                word.Clear();
             }
-        }
 
-
-        private static IEnumerable<WordAndLine> GetWordsFromFile(string file)
-        {
-            using (StreamReader reader = File.OpenText(file))
-            {
-                Console.WriteLine("Processing file {0} ...", file);
-                var stopWatch = new Stopwatch();
-                stopWatch.Start();
-                int lineNo = 0;
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    lineNo++;
-                    IEnumerable<string> words = GetWordsFromLine(line);
-                    foreach (string word in words)
-                    {
-                        yield return new WordAndLine {Line = lineNo, Word = word};
-                    }
-                }
-                stopWatch.Stop();
-                Console.WriteLine("Lines:{0}\tTime:{1}", lineNo, stopWatch.Elapsed);
-            }
-        }
-
-        private static IEnumerable<string> GetWordsFromLine(string line)
-        {
-            var word = new StringBuilder();
-            foreach (char ch in line)
-            {
-                if (char.IsLetter(ch))
-                {
-                    word.Append(ch);
-                }
-                else
-                {
-                    if (word.Length == 0) continue;
-                    yield return word.ToString();
-                    word.Clear();
-                }
-            }
-            if (word.Length == 0) yield break;
-            yield return word.ToString();
-        }
-
-        private struct WordAndLine
-        {
-            public int Line;
-            public string Word;
-        }
+        if (word.Length == 0) yield break;
+        yield return word.ToString();
     }
 }

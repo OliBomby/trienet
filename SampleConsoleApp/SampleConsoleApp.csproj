@@ -1,24 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="sample.txt" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Remove="sample.txt"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="sample.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+    <ItemGroup>
+        <Content Include="sample.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TrieNet\TrieNet.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TrieNet\TrieNet.csproj"/>
+    </ItemGroup>
 
 </Project>

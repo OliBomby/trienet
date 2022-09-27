@@ -1,4 +1,4 @@
-﻿namespace Gma.DataStructures.StringSearch.DemoApp {
+﻿namespace DemoApp {
     partial class MainForm
     {
         /// <summary>
