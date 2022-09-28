@@ -1,6 +1,9 @@
 [![NuGet version](https://badge.fury.io/nu/TrieNet2.svg)](https://badge.fury.io/nu/TrieNet2)
 
-![TrieNet - The library provides .NET Data Structures for Prefix String Search and Substring (Infix) Search to Implement Auto-completion and Intelli-sense.](/img/trienet.png)
+![](https://raw.githubusercontent.com/OliBomby/trienet/master/img/trienet.png)
+
+TrieNet - The library provides .NET Data Structures for Prefix String Search and Substring (Infix) Search to Implement Auto-completion and Intelli-sense.
+This is a modern .NET update for the old TrieNet package.
 
 # Usage
 
@@ -67,5 +70,5 @@ I don't have charts to show at the moment, but trust me that the `UkkonenTrie` i
 The app demonstrates indexing of large text files and look-up inside them. Indexing usually takes only a few seconds and the look-up delay will be unnoticeable for
 the user.
 
-![](/img/trie-demo-app.png)
+![](https://github.com/OliBomby/trienet/blob/master/img/trie-demo-app.png?raw=true)
 
