@@ -63,12 +63,16 @@ At the moment only `UkkonenTrie` implements this interface.
 
 ## Performance
 
-I don't have charts to show at the moment, but trust me that the `UkkonenTrie` is the fastest and most optimised.
+All diagrams are given in logarithmic scale on the x-axis and y-axis.
+
+![](https://raw.githubusercontent.com/OliBomby/trienet/master/img/look-up-time.png)
+
+![](https://raw.githubusercontent.com/OliBomby/trienet/master/img/build-up-time.png)
 
 ## Demo app
 
 The app demonstrates indexing of large text files and look-up inside them. Indexing usually takes only a few seconds and the look-up delay will be unnoticeable for
 the user.
 
-![](https://github.com/OliBomby/trienet/blob/master/img/trie-demo-app.png?raw=true)
+![](https://raw.githubusercontent.com/OliBomby/trienet/master/img/trie-demo-app.png)
 
