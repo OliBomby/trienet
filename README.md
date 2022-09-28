@@ -1,12 +1,12 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/4ruj2ijq2uc0pu2m/branch/master?svg=true)](https://ci.appveyor.com/project/gmamaladze/trienet/branch/master) [![NuGet version](https://badge.fury.io/nu/TrieNet.svg)](https://badge.fury.io/nu/TrieNet)
+[![NuGet version](https://badge.fury.io/nu/TrieNet2.svg)](https://badge.fury.io/nu/TrieNet2)
 
 ![TrieNet - The library provides .NET Data Structures for Prefix String Search and Substring (Infix) Search to Implement Auto-completion and Intelli-sense.](/img/trienet.png)
 
 # Usage
 
-<pre>
-  nuget install TODO
-</pre>
+```
+  nuget install TrieNet2
+```
 
 ```csharp
 using TrieNet.Ukkonen;
@@ -21,7 +21,10 @@ trie.Add("world", 2);
 trie.Add("hell", 3);
 
 var result = trie.Retrieve("hel");
-// result = { new WordPosition(0, 1), new WordPosition(0, 3) };
+// result = { 1, 3 };
+
+var result2 = trie.RetrieveSubstrings("ll");
+// result2 = { new WordPosition(2, 1), new WordPosition(2, 3) };
 ```
 
 ## Implementation
