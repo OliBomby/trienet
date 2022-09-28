@@ -65,6 +65,8 @@ public class PerformanceComparisonTests {
         Measure(trie, randomText, lookupWords, out var buildUp, out var avgLookUp);
         Console.WriteLine("Build-up time: {0}", buildUp);
         Console.WriteLine("Avg. look-up time: {0}", avgLookUp);
+        Console.WriteLine("Build-up time ticks: {0}", buildUp.Ticks);
+        Console.WriteLine("Avg. look-up time ticks: {0}", avgLookUp.Ticks);
         writer.WriteLine("{0};{1};{2};{3}", trieTypeName, wordCount, buildUp, avgLookUp);
     }
 
