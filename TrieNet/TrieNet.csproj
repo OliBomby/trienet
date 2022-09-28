@@ -2,20 +2,36 @@
 
     <PropertyGroup>
         <TargetFrameworks>net6.0</TargetFrameworks>
-        <PackageId>TrieNet</PackageId>
+        <PackageId>TrieNet2</PackageId>
         <Authors>TrieNet</Authors>
-        <Company>George Mamaladze</Company>
+        <Company>OliBomby</Company>
         <Product>TrieNet</Product>
-        <Description>.NET Implementations of Trie Data Structures for Substring Search, Auto-completion and Intelli-sense. Includes: patricia trie, suffix trie and a trie implementation using Ukkonen's algorithm.</Description>
+        <Description>.NET Implementations of Trie Data Structures for Substring Search, Auto-completion and Intelli-sense. Includes: patricia trie, suffix trie and a trie implementation using Ukkonen's algorithm. This is a modern .NET update for the old TrieNet package.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Copyright>Copyright 2013</Copyright>
-        <AssemblyVersion>1.0.4.0</AssemblyVersion>
-        <FileVersion>1.0.4.0</FileVersion>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/license.txt</PackageLicenseUrl>
-        <PackageProjectUrl>ttps://github.com/gmamaladze/trienet</PackageProjectUrl>
-        <PackageIconUrl>https://raw.githubusercontent.com/gmamaladze/trienet/master/img/trienet.png</PackageIconUrl>
-        <PackageTags>ata-structures dotnet algorithms search</PackageTags>
+        <Copyright>Copyright OliBomby 2022</Copyright>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <FileVersion>2.0.0</FileVersion>
+        <PackageLicenseUrl></PackageLicenseUrl>
+        <PackageProjectUrl>https://github.com/OliBomby/trienet</PackageProjectUrl>
+        <PackageTags>ata-structures dotnet algorithms string search ukkonen trie</PackageTags>
         <Version>1.0.4</Version>
+        <PackageVersion>2.0.0</PackageVersion>
+        <RepositoryUrl>https://github.com/OliBomby/trienet</RepositoryUrl>
+        <PackageIcon>trienet.png</PackageIcon>
+        <Title>TrieNet 2</Title>
+		<PackageLicenseFile>license.txt</PackageLicenseFile>
     </PropertyGroup>
+	
+    <ItemGroup>
+      <None Include="..\img\trienet.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+        <Link>trienet.png</Link>
+      </None>
+    </ItemGroup>
+	
+	<ItemGroup>
+		<None Include="..\license.txt" Pack="true" PackagePath="" />
+	</ItemGroup>
 
 </Project>
