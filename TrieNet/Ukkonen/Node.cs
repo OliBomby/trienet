@@ -8,11 +8,11 @@ using System.Linq;
 namespace TrieNet.Ukkonen;
 
 public class Node<TKey, TValue> where TKey : IComparable<TKey> {
-    private readonly List<WordPosition<TValue>> data;
+    public List<WordPosition<TValue>> Data { get; }
 
     public Node() {
         Edges = new List<(TKey, Edge<TKey, TValue>)>();
-        data = new List<WordPosition<TValue>>();
+        Data = new List<WordPosition<TValue>>();
         Suffix = null;
     }
 
@@ -27,21 +27,25 @@ public class Node<TKey, TValue> where TKey : IComparable<TKey> {
         return sum;
     }
 
+    /// <summary>
+    /// Gets the data of the whole sub-tree rooted on this node.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerable<WordPosition<TValue>> GetData() {
         var childData = Edges.SelectMany(e => e.Item2.Target.GetData());
-        return data.Concat(childData);
+        return Data.Concat(childData);
     }
 
     public void AddRef(WordPosition<TValue> value) {
-        if (data.Contains(value))
+        if (Data.Contains(value))
             return;
 
-        data.Add(value);
+        Data.Add(value);
         //  add this reference to all the suffixes as well
         var iter = Suffix;
         var i = 0;
         while (iter != null) {
-            iter.data.Add(new WordPosition<TValue>(value.CharPosition + ++i, value.Value));
+            iter.Data.Add(new WordPosition<TValue>(value.CharPosition + ++i, value.Value));
             iter = iter.Suffix;
         }
     }
