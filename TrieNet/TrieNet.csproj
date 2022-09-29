@@ -14,8 +14,7 @@
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/OliBomby/trienet</PackageProjectUrl>
         <PackageTags>ata-structures dotnet algorithms string search ukkonen trie</PackageTags>
-        <Version>1.0.4</Version>
-        <PackageVersion>2.0.0</PackageVersion>
+        <Version>2.0.1</Version>
         <RepositoryUrl>https://github.com/OliBomby/trienet</RepositoryUrl>
         <PackageIcon>trienet.png</PackageIcon>
         <Title>TrieNet 2</Title>
