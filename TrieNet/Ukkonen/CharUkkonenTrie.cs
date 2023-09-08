@@ -16,11 +16,11 @@ public class CharUkkonenTrie<TValue> : UkkonenTrie<char, TValue>, ISuffixTrie<TV
     }
 
     public void Remove(string key, TValue value) {
-        throw new NotImplementedException();
+        RemoveAll(key.AsMemory(), new[]{ value });
     }
 
     public void Remove(string key, params TValue[] values) {
-        throw new NotImplementedException();
+        RemoveAll(key.AsMemory(), values);
     }
 
     public IEnumerable<TValue> Retrieve(string query) {

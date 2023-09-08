@@ -36,6 +36,15 @@ public class Node<TKey, TValue> where TKey : IComparable<TKey> {
         return Data.Concat(childData);
     }
 
+    public void RemoveAll(TValue[] values) {
+        Data.RemoveAll(w => Contains(values, w));
+        foreach(var edge in Edges)
+            edge.Item2.Target.RemoveAll(values);
+    }
+
+    static bool Contains(TValue[] values, WordPosition<TValue> w) => 
+        values.Any(v => v is not null && v.Equals(w.Value) || v is null && w.Value is null);
+
     public void AddRef(WordPosition<TValue> value) {
         if (Data.Contains(value))
             return;

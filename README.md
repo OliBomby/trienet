@@ -38,6 +38,10 @@ This small library contains a bunch of trie data structures all having the same 
 public interface ITrie {
   IEnumerable Retrieve(string query);
   void Add(string key, TValue value);
+    
+  // Note, only Trie and UkkonenTrie are only supported.
+  void Remove(string key, TValue value);
+  void Remove(string key, params TValue[] values);
 }
 ```
 
@@ -61,6 +65,12 @@ public interface IGenericTrie<TKey, TValue> where TKey : IEquatable<TKey> {
 
 At the moment only `UkkonenTrie` implements this interface.
 
+## Removal
+
+The current implementation allows for item removal in two specific tree types: `Trie` and `UkkonenTree`.
+
+Please note that removing an item does **not** optimize or alter the internal tree structure. This limitation exists due to the complexities involved in reducing a trie tree without adversely affecting its other functionalities.
+
 ## Performance
 
 All diagrams are given in logarithmic scale on the x-axis and y-axis.
@@ -75,4 +85,3 @@ The app demonstrates indexing of large text files and look-up inside them. Index
 the user.
 
 ![](https://raw.githubusercontent.com/OliBomby/trienet/master/img/trie-demo-app.png)
-

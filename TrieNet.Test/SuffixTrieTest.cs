@@ -10,7 +10,7 @@ using TrieNet.PatriciaTrie;
 namespace TrieNet.Test;
 
 public class SuffixTrieTest {
-    public readonly string[] Words20 = {
+    public static readonly string[] Words20 = {
         "overcontribution",
         "overcontribute",
         "overcontraction",
@@ -45,7 +45,7 @@ public class SuffixTrieTest {
         Trie2.Add("aabacdefac", 0);
         Trie2.Add("aabacdefac", 1);
     }
-
+    
     [TestCase("a", new[] { 0, 1, 3, 8 })]
     [TestCase("b", new[] { 2 })]
     [TestCase("c", new[] { 4, 9 })]
