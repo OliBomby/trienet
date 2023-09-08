@@ -15,4 +15,12 @@ public class Trie<TValue> : TrieNode<TValue>, ITrie<TValue> {
     public void Add(string key, TValue value) {
         Add(key, 0, value);
     }
+
+    public void Remove(string key, TValue value) {
+        RemoveFromKey(key, new [] { value });
+    }
+
+    public void Remove(string key, params TValue[] values) {
+        RemoveFromKey(key, values);
+    }
 }

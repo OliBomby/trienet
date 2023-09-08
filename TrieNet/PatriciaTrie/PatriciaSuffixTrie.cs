@@ -39,6 +39,14 @@ public class PatriciaSuffixTrie<TValue> : ISuffixTrie<TValue> {
             innerTrie.Add(currentSuffix, new WordPosition<TValue>(position, value));
     }
 
+    public void Remove(string key, TValue value) {
+        throw new NotSupportedException();
+    }
+
+    public void Remove(string key, params TValue[] values) {
+        throw new NotImplementedException();
+    }
+
     private static IEnumerable<Tuple<StringPartition, int>> GetAllSuffixes(int minSuffixLength, string word) {
         for (var i = word.Length - minSuffixLength; i >= 0; i--)
             yield return new Tuple<StringPartition, int>(new StringPartition(word, i), i);

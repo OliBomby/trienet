@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace TrieNet.Trie;
 
@@ -32,6 +33,18 @@ public abstract class TrieNodeBase<TValue> {
 
     protected abstract void AddValue(TValue value);
 
+    protected virtual void RemoveAll(TValue[] values) {
+        throw new NotSupportedException();
+    }
+
+    protected void RemoveFromKey(string key, TValue[] values) {
+        if (key == null) throw new ArgumentNullException(nameof(key));
+        var child = Enumerable.Range(0, key.Length).Aggregate(this, (node, position) => node?.GetChildOrNull(key, position));
+        if (child is not null)
+            foreach(var node in child.Subtree())
+                node.RemoveAll(values);
+    }
+
     protected abstract TrieNodeBase<TValue> GetOrCreateChild(char key);
 
     protected virtual IEnumerable<TValue> Retrieve(string query, int position) {
@@ -50,6 +63,7 @@ public abstract class TrieNodeBase<TValue> {
 
     protected abstract TrieNodeBase<TValue> GetChildOrNull(string query, int position);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool EndOfString(int position, string text) {
         return position >= text.Length;
     }

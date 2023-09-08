@@ -25,6 +25,14 @@ public class PatriciaTrie<TValue> :
         Add(new StringPartition(key), value);
     }
 
+    public void Remove(string key, TValue value) {
+        throw new NotSupportedException();
+    }
+
+    public void Remove(string key, params TValue[] values) {
+        throw new NotImplementedException();
+    }
+
     internal override void Add(StringPartition keyRest, TValue value) {
         GetOrCreateChild(keyRest, value);
     }

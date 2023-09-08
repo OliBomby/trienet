@@ -39,6 +39,14 @@ public class SuffixTrie<T> : ISuffixTrie<T> {
             innerTrie.Add(suffix, new WordPosition<T>(position, value));
     }
 
+    public void Remove(string key, T value) {
+        throw new NotImplementedException();
+    }
+
+    public void Remove(string key, params T[] values) {
+        throw new NotImplementedException();
+    }
+
     private static IEnumerable<Tuple<string, int>> GetAllSuffixes(int minSuffixLength, string word) {
         for (var i = word.Length - minSuffixLength; i >= 0; i--) {
             var partition = new StringPartition(word, i);
