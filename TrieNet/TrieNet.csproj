@@ -9,12 +9,9 @@
         <Description>.NET Implementations of Trie Data Structures for Substring Search, Auto-completion and Intelli-sense. Includes: patricia trie, suffix trie and a trie implementation using Ukkonen's algorithm. This is a modern .NET update for the old TrieNet package.</Description>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Copyright>Copyright OliBomby 2022</Copyright>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
-        <FileVersion>2.0.0</FileVersion>
         <PackageLicenseUrl></PackageLicenseUrl>
         <PackageProjectUrl>https://github.com/OliBomby/trienet</PackageProjectUrl>
         <PackageTags>ata-structures dotnet algorithms string search ukkonen trie</PackageTags>
-        <Version>2.0.1</Version>
         <RepositoryUrl>https://github.com/OliBomby/trienet</RepositoryUrl>
         <PackageIcon>trienet.png</PackageIcon>
         <Title>TrieNet 2</Title>
@@ -31,6 +28,13 @@
 	
 	<ItemGroup>
 		<None Include="..\license.txt" Pack="true" PackagePath="" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="MinVer" Version="5.0.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>
