@@ -15,4 +15,12 @@ public class ConcurrentTrie<TValue> : ConcurrentTrieNode<TValue>, ITrie<TValue> 
     public void Add(string key, TValue value) {
         Add(key, 0, value);
     }
+
+    public void Remove(string key, TValue value) {
+        throw new NotSupportedException();
+    }
+
+    public void Remove(string key, params TValue[] values) {
+        throw new NotImplementedException();
+    }
 }

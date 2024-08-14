@@ -24,4 +24,12 @@ public class FakeTrie<T> : ITrie<T> {
         var keyValPair = new KeyValuePair<string, T>(key, value);
         stack.Push(keyValPair);
     }
+
+    public void Remove(string key, T value) {
+        throw new System.NotImplementedException();
+    }
+
+    public void Remove(string key, params T[] values) {
+        throw new System.NotImplementedException();
+    }
 }

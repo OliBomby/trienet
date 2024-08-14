@@ -13,15 +13,20 @@ namespace TrieNet.Test;
 public abstract class BaseTrieTest {
     [OneTimeSetUp]
     public virtual void Setup() {
-        Trie = CreateTrie();
-        for (var i = 0; i < Words40.Length; i++) Trie.Add(Words40[i], i);
+        Trie = CreateDefaultTrie();
+    }
+
+    public ITrie<int> CreateDefaultTrie() {
+        var trie = CreateTrie();
+        for (var i = 0; i < Words40.Length; i++) trie.Add(Words40[i], i);
+        return trie;
     }
 
     protected ITrie<int> Trie { get; private set; }
 
     protected abstract ITrie<int> CreateTrie();
 
-    public readonly string[] Words40 = {
+    public static readonly string[] Words40 = {
         "daubreelite",
         "daubingly",
         "daubingly",

@@ -66,6 +66,16 @@ public class UkkonenTrie<TKey, TValue> : IGenericSuffixTrie<TKey, TValue>
         if (null == activeLeaf.Suffix && activeLeaf != Root && activeLeaf != s) activeLeaf.Suffix = s;
     }
 
+    #region Remove node
+
+    protected void RemoveAll(ReadOnlyMemory<TKey> key, TValue[] values) {
+        if (key.Length < MinSuffixLength) return;
+        var tmpNode = SearchNode(key.Span);
+        tmpNode?.RemoveAll(values);
+    }
+    
+    #endregion
+
     public IEnumerable<WordPosition<TValue>>
         RetrieveSubstringsRange(ReadOnlyMemory<TKey> min, ReadOnlyMemory<TKey> max) {
         if (min.Length != max.Length) throw new ArgumentException("Lengths of min and max must be the same.");

@@ -15,6 +15,14 @@ public class CharUkkonenTrie<TValue> : UkkonenTrie<char, TValue>, ISuffixTrie<TV
         Add(key.AsMemory(), value);
     }
 
+    public void Remove(string key, TValue value) {
+        RemoveAll(key.AsMemory(), new[]{ value });
+    }
+
+    public void Remove(string key, params TValue[] values) {
+        RemoveAll(key.AsMemory(), values);
+    }
+
     public IEnumerable<TValue> Retrieve(string query) {
         return Retrieve(query.AsSpan());
     }

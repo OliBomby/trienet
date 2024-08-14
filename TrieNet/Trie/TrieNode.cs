@@ -3,17 +3,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace TrieNet.Trie;
 
 [Serializable]
 public class TrieNode<TValue> : TrieNodeBase<TValue> {
     private readonly Dictionary<char, TrieNode<TValue>> children;
-    private readonly Queue<TValue> values;
+    private readonly List<TValue> values = new();
 
     protected TrieNode() {
         children = new Dictionary<char, TrieNode<TValue>>();
-        values = new Queue<TValue>();
     }
 
     protected override int KeyLength => 1;
@@ -35,7 +36,8 @@ public class TrieNode<TValue> : TrieNodeBase<TValue> {
         return result;
     }
 
-    protected override TrieNodeBase<TValue> GetChildOrNull(string query, int position) {
+    [return: MaybeNull]
+    protected override TrieNodeBase<TValue> GetChildOrNull([NotNull] string query, int position) {
         if (query == null) throw new ArgumentNullException(nameof(query));
         return
             children.TryGetValue(query[position], out var childNode)
@@ -44,6 +46,10 @@ public class TrieNode<TValue> : TrieNodeBase<TValue> {
     }
 
     protected override void AddValue(TValue value) {
-        values.Enqueue(value);
+        values.Add(value);
+    }
+
+    protected override void RemoveAll(TValue[] nodeValues) {
+        values.RemoveAll(v => nodeValues.Any(nv => v is not null && v.Equals(nv) || (v is null && nv is null)));
     }
 }
